@@ -20,6 +20,12 @@ export default clerkMiddleware((auth, request) => {
     return NextResponse.redirect(onboardingUrl)
   }
 
+  // ログイン済みかつonboardingCompleteがtrueの場合、/にリダイレクト
+  if (userId && sessionClaims?.metadata?.onboardingComplete) {
+    const homeUrl = new URL('/', request.url)
+    return NextResponse.redirect(homeUrl)
+  }
+
   // ログイン済かつ非公開ルートにアクセスした場合はそのまま表示する
   if (userId && !isPublicRoutes(request)) return NextResponse.next()
 })
