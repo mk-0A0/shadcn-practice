@@ -1,9 +1,9 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
-const isUnProtectedRoute = createRouteMatcher('/')
+const isPublicRoutes = createRouteMatcher('/')
 
 export default clerkMiddleware((auth, request) => {
-  if (!isUnProtectedRoute(request)) auth().protect()
+  if (!isPublicRoutes(request)) auth().protect()
 })
 
 export const config = {
