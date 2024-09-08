@@ -1,4 +1,4 @@
-export default async function UserForm() {
+export default async function Page() {
   return (
     <form action="">
       <label htmlFor="name">名前</label>

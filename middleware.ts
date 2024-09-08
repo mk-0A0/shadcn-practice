@@ -2,12 +2,13 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 
 const isPublicRoutes = createRouteMatcher('/')
+const isOnboardingRoutes = createRouteMatcher('/onboarding')
 
 export default clerkMiddleware((auth, request) => {
   const { userId, sessionClaims, redirectToSignIn } = auth()
 
-  // 未ログインかつisPublicRoutesの場合はreturn
-  if (!userId && isPublicRoutes(request)) return
+  // ログイン済みかつ/onboardingにアクセスした場合はそのまま表示する
+  if (userId && isOnboardingRoutes(request)) return NextResponse.next()
 
   // 未ログインかつ非公開ルートへのアクセスはログイン画面にリダイレクト
   if (!userId && !isPublicRoutes(request))
