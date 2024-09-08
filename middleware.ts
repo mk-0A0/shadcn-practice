@@ -18,6 +18,9 @@ export default clerkMiddleware((auth, request) => {
     const onboardingUrl = new URL('/onboarding', request.url)
     return NextResponse.redirect(onboardingUrl)
   }
+
+  // ログイン済かつ非公開ルートにアクセスした場合はそのまま表示する
+  if (userId && !isPublicRoutes(request)) return NextResponse.next()
 })
 
 export const config = {
