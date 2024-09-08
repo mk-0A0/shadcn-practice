@@ -1,4 +1,8 @@
-import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
+import {
+  clerkMiddleware,
+  createRouteMatcher,
+  redirectToSignIn,
+} from '@clerk/nextjs/server'
 
 const isPublicRoutes = createRouteMatcher('/')
 
@@ -6,7 +10,10 @@ export default clerkMiddleware((auth, request) => {
   // 未ログインかつisPublicRoutesの場合はreturn
   if (!auth().userId && isPublicRoutes(request)) return
 
-  if (!isPublicRoutes(request)) auth().protect()
+  // 未ログインかつ非公開ルートへのアクセスはログイン画面にリダイレクト
+  if (!auth().userId && !isPublicRoutes(request))
+    // TODO: 非推奨を書き直す
+    redirectToSignIn({ returnBackUrl: request.url })
 })
 
 export const config = {
