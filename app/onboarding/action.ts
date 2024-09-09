@@ -6,10 +6,23 @@ import { revalidatePath } from 'next/cache'
 import { authGuard } from '@/app/actions/auth'
 import { redirect } from 'next/navigation'
 import { z } from 'zod'
-import { clerkClient } from '@clerk/nextjs/server'
+import { auth, clerkClient } from '@clerk/nextjs/server'
+import { cache } from 'react'
 
 const UserSchema = z.object({
   name: z.string().max(240),
+})
+
+export const currentUser = cache(async () => {
+  const { userId } = auth()
+  if (!userId) return null
+
+  const user = await db.user.findUnique({
+    where: {
+      id: userId,
+    },
+  })
+  return user
 })
 
 export const createUser = async (formData: FormData) => {

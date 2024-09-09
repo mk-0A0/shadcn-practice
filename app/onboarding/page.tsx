@@ -1,6 +1,16 @@
+import { createUser, currentUser } from '@/app/onboarding/action'
+
 async function UserForm({ editMode }: { editMode?: boolean }) {
+  const user = await currentUser()
+  const defaultValue = editMode
+    ? {
+        name: user?.name,
+        profileImage: user?.profileImageURL,
+      }
+    : { name: 'Demo User', profileImage: '' }
+
   return (
-    <form action="">
+    <form action={createUser}>
       <div className="space-y-6">
         <h1 className="font-bold text-xl mb-4">
           プロフィールを{editMode ? '更新' : '作成'}する
@@ -17,7 +27,7 @@ async function UserForm({ editMode }: { editMode?: boolean }) {
             type="text"
             id="name"
             required
-            defaultValue=""
+            defaultValue={defaultValue.name}
             name="name"
             className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
           />
