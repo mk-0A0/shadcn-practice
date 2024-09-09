@@ -4,24 +4,25 @@ generator client {
 
 datasource db {
   provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 model User {
   // ID は Clerk のユーザーIDを使うのでデフォルトの乱数IDは使わない
-  id        String   @id
-  name      String
-  createdAt DateTime @default(now())
-  posts     Post[]
+  id              String  @id
+  name            String  @db.VarChar(240)
+  profileImageURL String?
+  posts           Post[]
+  likes           Post[]  @relation("PostLikes")
 }
 
 model Post {
   // ID はサムネイル画像で使う都合マニュアル生成するので乱数IDは使わない
   id           String   @id
   thumbnailURL String?
-  title        String   @db.VarChar(140)
   body         String   @db.VarChar(140)
+  likes        User[]   @relation("PostLikes")
   author       User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
   authorId     String
   createdAt    DateTime @default(now())
