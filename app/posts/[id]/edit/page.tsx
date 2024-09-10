@@ -1,3 +1,5 @@
+import PostForm from '@/app/components/post-form'
+
 export default function Page() {
-  return <div>記事編集</div>
+  return <PostForm />
 }
