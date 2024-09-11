@@ -1,7 +1,14 @@
+import { createPost } from '@/app/components/post-form/action'
+
 export default async function PostForm({ editId }: { editId?: String }) {
+  const defaultValue = {
+    title: '',
+    body: '',
+  }
+
   return (
     <div>
-      <form action="">
+      <form action={createPost}>
         <div>
           <div>
             <input
@@ -14,13 +21,23 @@ export default async function PostForm({ editId }: { editId?: String }) {
           </div>
           <input type="file" name="thumbnail" accept="images/png,images/jpeg" />
         </div>
+        <label htmlFor="title">タイトル</label>
+        <input
+          maxLength={140}
+          type="text"
+          name="title"
+          id="title"
+          placeholder=""
+          defaultValue={defaultValue.title}
+          required
+        />
         <label htmlFor="body">本文</label>
         <textarea
           maxLength={140}
           name="body"
           id="body"
           placeholder=""
-          defaultValue=""
+          defaultValue={defaultValue.body}
           required
         />
         <button>{editId ? '更新' : '作成'}</button>
