@@ -43,3 +43,14 @@ export const createPost = async (formData: FormData) => {
   revalidatePath('/')
   redirect('/')
 }
+
+// 記事を取得
+export const getOwnPost = async (id: string) => {
+  const authorId = authGuard()
+  return db.post.findUnique({
+    where: {
+      authorId,
+      id,
+    },
+  })
+}

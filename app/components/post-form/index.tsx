@@ -1,24 +1,32 @@
-import { createPost } from '@/app/components/post-form/action'
+import { createPost, getOwnPost } from '@/app/components/post-form/action'
 
-export default async function PostForm({ editId }: { editId?: String }) {
-  const defaultValue = {
-    title: '',
-    body: '',
-  }
+export default async function PostForm({ editId }: { editId?: string }) {
+  const updatePost = editId ? await getOwnPost(editId) : null
+  const defaultValue = updatePost
+    ? {
+        title: updatePost.title,
+        body: updatePost.body,
+      }
+    : {
+        title: '',
+        body: '',
+      }
 
   return (
     <div>
       <form action={createPost}>
         <div>
-          <div>
-            <input
-              type="checkbox"
-              id="thumbnail-action"
-              name="thumbnail-action"
-              value="delete"
-            />
-            <label htmlFor="thumbnail-action">削除</label>
-          </div>
+          {updatePost?.thumbnailURL && (
+            <div>
+              <input
+                type="checkbox"
+                id="thumbnail-action"
+                name="thumbnail-action"
+                value="delete"
+              />
+              <label htmlFor="thumbnail-action">削除</label>
+            </div>
+          )}
           <input type="file" name="thumbnail" accept="images/png,images/jpeg" />
         </div>
         <label htmlFor="title">タイトル</label>
@@ -40,10 +48,10 @@ export default async function PostForm({ editId }: { editId?: String }) {
           defaultValue={defaultValue.body}
           required
         />
-        <button>{editId ? '更新' : '作成'}</button>
+        <button>{updatePost ? '更新' : '作成'}</button>
       </form>
 
-      {editId && (
+      {updatePost && (
         <form action="">
           <button>記事を削除</button>
         </form>
