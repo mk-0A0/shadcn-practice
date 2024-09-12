@@ -5,6 +5,7 @@ import {
   PutObjectCommandInput,
   S3Client,
 } from '@aws-sdk/client-s3'
+import { dataURLtoBuffer } from '@/lib/utils'
 
 const client = new S3Client({
   region: 'auto',
@@ -15,7 +16,9 @@ const client = new S3Client({
   },
 })
 
-export const putImage = async (file: File, pathname: string) => {
+export const putImage = async (dataUrl: string, pathname: string) => {
+  const file = dataURLtoBuffer(dataUrl)
+
   const uploadParams: PutObjectCommandInput = {
     Bucket: 'mk-00',
     Key: pathname,

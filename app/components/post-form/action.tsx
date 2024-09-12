@@ -27,6 +27,16 @@ export const createPost = async (formData: FormData) => {
     ...validatedData,
   }
 
+  // TODO: 以下のエラーを解消する
+  //  Error: The first argument must be of type string or an instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined
+  // const thumbnailDataURL = formData.get('thumbnail') as string
+  // if (thumbnailDataURL) {
+  //   newData.thumbnailURL = await putImage(
+  //     thumbnailDataURL,
+  //     `posts/${id}/thumbnail.png`
+  //   )
+  // }
+
   await db.post.create({
     data: newData,
   })
