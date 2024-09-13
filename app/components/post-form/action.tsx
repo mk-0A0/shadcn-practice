@@ -44,6 +44,28 @@ export const createPost = async (formData: FormData) => {
   redirect('/')
 }
 
+export const updatePost = async (id: string, formData: FormData) => {
+  const authorId = authGuard()
+  const validationData = PrismaSchema.parse({
+    title: formData.get('title'),
+    body: formData.get('body'),
+  })
+  const newData: Prisma.PostUncheckedUpdateInput = {
+    ...validationData,
+  }
+
+  await db.post.update({
+    where: {
+      authorId,
+      id,
+    },
+    data: newData,
+  })
+
+  revalidatePath('/')
+  redirect(`/posts/${id}`)
+}
+
 // 記事を取得
 export const getOwnPost = async (id: string) => {
   const authorId = authGuard()

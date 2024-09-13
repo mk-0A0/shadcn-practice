@@ -1,4 +1,8 @@
-import { createPost, getOwnPost } from '@/app/components/post-form/action'
+import {
+  createPost,
+  updatePost,
+  getOwnPost,
+} from '@/app/components/post-form/action'
 
 export default async function PostForm({ editId }: { editId?: string }) {
   const oldPost = editId ? await getOwnPost(editId) : null
@@ -14,7 +18,7 @@ export default async function PostForm({ editId }: { editId?: string }) {
 
   return (
     <div>
-      <form action={createPost}>
+      <form action={editId ? updatePost.bind(null, editId) : createPost}>
         <div>
           {oldPost?.thumbnailURL && (
             <div>
