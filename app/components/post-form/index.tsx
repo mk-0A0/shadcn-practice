@@ -1,11 +1,15 @@
-import { createPost, getOwnPost } from '@/app/components/post-form/action'
+import {
+  createPost,
+  updatePost,
+  getOwnPost,
+} from '@/app/components/post-form/action'
 
 export default async function PostForm({ editId }: { editId?: string }) {
-  const updatePost = editId ? await getOwnPost(editId) : null
-  const defaultValue = updatePost
+  const oldPost = editId ? await getOwnPost(editId) : null
+  const defaultValue = oldPost
     ? {
-        title: updatePost.title,
-        body: updatePost.body,
+        title: oldPost.title,
+        body: oldPost.body,
       }
     : {
         title: '',
@@ -14,9 +18,9 @@ export default async function PostForm({ editId }: { editId?: string }) {
 
   return (
     <div>
-      <form action={createPost}>
+      <form action={editId ? updatePost.bind(null, editId) : createPost}>
         <div>
-          {updatePost?.thumbnailURL && (
+          {oldPost?.thumbnailURL && (
             <div>
               <input
                 type="checkbox"
@@ -48,10 +52,10 @@ export default async function PostForm({ editId }: { editId?: string }) {
           defaultValue={defaultValue.body}
           required
         />
-        <button>{updatePost ? '更新' : '作成'}</button>
+        <button>{oldPost ? '更新' : '作成'}</button>
       </form>
 
-      {updatePost && (
+      {editId && (
         <form action="">
           <button>記事を削除</button>
         </form>
