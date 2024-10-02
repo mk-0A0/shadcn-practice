@@ -66,6 +66,20 @@ export const updatePost = async (id: string, formData: FormData) => {
   redirect(`/posts/${id}`)
 }
 
+export const deletePost = async (id: string) => {
+  const authorId = authGuard()
+
+  await db.post.delete({
+    where: {
+      authorId,
+      id,
+    },
+  })
+
+  revalidatePath('/')
+  redirect('/')
+}
+
 // 記事を取得
 export const getOwnPost = async (id: string) => {
   const authorId = authGuard()

@@ -2,6 +2,7 @@ import {
   createPost,
   updatePost,
   getOwnPost,
+  deletePost,
 } from '@/app/components/post-form/action'
 
 export default async function PostForm({ editId }: { editId?: string }) {
@@ -56,7 +57,7 @@ export default async function PostForm({ editId }: { editId?: string }) {
       </form>
 
       {editId && (
-        <form action="">
+        <form action={deletePost.bind(null, editId)}>
           <button>記事を削除</button>
         </form>
       )}
