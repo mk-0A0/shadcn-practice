@@ -1,4 +1,9 @@
 import { createUser, currentUser } from '@/app/onboarding/action'
+import { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'プロフィール作成',
+}
 
 async function UserForm({ editMode }: { editMode?: boolean }) {
   const user = await currentUser()
