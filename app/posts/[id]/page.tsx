@@ -33,11 +33,7 @@ export const generateMetadata = async (
   }
 }
 
-export default async function Page({
-  params: { id },
-}: {
-  params: { id: string }
-}) {
+export default async function Page({ params: { id } }: Props) {
   const user = await currentUser()
   const post = await db.post.findUnique({
     where: {
