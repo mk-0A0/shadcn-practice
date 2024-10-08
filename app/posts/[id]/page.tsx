@@ -16,9 +16,7 @@ export const generateMetadata = async (
   const doc = await getPost(params.id)
   const parentMeta = await parent
 
-  if (!doc) {
-    return {}
-  }
+  if (!doc) return notFound()
 
   return {
     title: doc.title,
