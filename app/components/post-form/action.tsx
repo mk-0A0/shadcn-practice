@@ -7,6 +7,7 @@ import { Prisma } from '@prisma/client'
 import { db } from '@/lib/prisma'
 import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
+import { cache } from 'react'
 
 const PrismaSchema = z.object({
   body: z.string().max(140),
@@ -79,6 +80,14 @@ export const deletePost = async (id: string) => {
   revalidatePath('/')
   redirect('/')
 }
+
+export const getPost = cache(async (id: string) => {
+  return db.post.findUnique({
+    where: {
+      id,
+    },
+  })
+})
 
 // 記事を取得
 export const getOwnPost = async (id: string) => {
